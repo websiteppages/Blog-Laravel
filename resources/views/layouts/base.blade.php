@@ -7,13 +7,24 @@
 
     <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    {{-- <meta http-equiv="X-Frame-Options" content="SAMEORIGIN"> --}}
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
 
     <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'nonce-{{ $cspNonce }}'; script-src-attr 'none'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests;">
+    {{-- <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+          script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
+          script-src-attr 'none';
+          style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
+          img-src 'self' data: https:;
+          font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:;
+          form-action 'self';
+          frame-ancestors 'none';
+          base-uri 'self';
+          object-src 'none';
+          upgrade-insecure-requests;"
+    > --}}
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset($favicon ?? 'favicon.png') }}">

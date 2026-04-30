@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Enums;
+
+enum UserRole: string
+{
+    case Owner     = 'owner';
+    case Admin     = 'admin';
+    case Developer = 'developer';
+    case Editor    = 'editor';
+
+    public function label(): string
+    {
+        return match($this) {
+            self::Owner     => 'Owner',
+            self::Admin     => 'Administrator',
+            self::Developer => 'Developer',
+            self::Editor    => 'Editor',
+        };
+    }
+
+    public function canAccessDashboard(): bool
+    {
+        return in_array($this, [
+            self::Owner, self::Admin, self::Developer,
+            self::Editor,
+        ]);
+    }
+
+    // public function canManagePosts(): bool
+    // {
+    //     return in_array($this, [
+    //         self::Owner, self::Admin, self::Developer,
+    //         self::Editor,
+    //     ]);
+    // }
+
+    // public function canManageAnyPost(): bool
+    // {
+    //     return in_array($this, [
+    //         self::Owner, self::Admin, self::Editor,
+    //     ]);
+    // }
+
+    // public function canPublish(): bool
+    // {
+    //     return in_array($this, [
+    //         self::Owner, self::Admin, self::Editor,
+    //     ]);
+    // }
+
+    public function isProtected(): bool
+    {
+        return in_array($this, [self::Owner]);
+
+        //cannot be deleted / modified
+        //return in_array($this, [self::Owner, self::Admin]);
+    }
+
+    public function isImmutable(): bool
+    {
+        return $this === self::Owner;
+    }
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
+
+    public static function options(): array
+    {
+        return collect(self::cases())
+            ->mapWithKeys(fn($c) => [$c->value => $c->label()])
+            ->toArray();
+    }
+}

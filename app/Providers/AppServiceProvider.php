@@ -2,23 +2,44 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Post;
+use App\Models\Tag;
+use App\Models\User;
+use App\Observers\PostObserver;
+use App\Observers\UserObserver;
+use App\Policies\CategoryPolicy;
+use App\Policies\PostPolicy;
+use App\Policies\RolePolicy;
+use App\Policies\TagPolicy;
+use App\Policies\UserPolicy;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Permission\Models\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
+        $this->app->register(RepositoryServiceProvider::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        // ── Observers ───────────────────────────────────────
+        //Post::observe(PostObserver::class);
+        //User::observe(UserObserver::class);
+
+        // ── Policies ────────────────────────────────────────
+        Gate::policy(User::class,     UserPolicy::class);
+        Gate::policy(Role::class,     RolePolicy::class);
+        //Gate::policy(Post::class,     PostPolicy::class);
+        //Gate::policy(Category::class, CategoryPolicy::class);
+        //Gate::policy(Tag::class,      TagPolicy::class);
+
+        // ── Tailwind Pagination ──────────────────────────────
+        Paginator::useTailwind();
     }
 }
