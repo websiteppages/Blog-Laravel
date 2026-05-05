@@ -35,6 +35,8 @@ class AppServiceProvider extends ServiceProvider
         // ── Policies ────────────────────────────────────────
         Gate::policy(User::class,     UserPolicy::class);
         Gate::policy(Role::class,     RolePolicy::class);
+        //Role model-க்கு எந்த Policy class use பண்ணணும் என்று Laravel-க்கு சொல்லு
+
         //Gate::policy(Post::class,     PostPolicy::class);
         //Gate::policy(Category::class, CategoryPolicy::class);
         //Gate::policy(Tag::class,      TagPolicy::class);

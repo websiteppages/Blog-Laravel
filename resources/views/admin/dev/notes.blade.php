@@ -15,6 +15,7 @@
     php artisan make:controller Customer/DashboardController
     php artisan make:controller Admin/OverviewController
     php artisan make:controller Admin/RoleController
+    php artisan make:controller Admin/UserController
 
     php artisan make:middleware RoleMiddleware
 
@@ -25,6 +26,7 @@
 
     php artisan make:model Book -m
     php artisan make:model Role
+    php artisan make:model Post -m
 
     ---------------------------------------------------------------------
     "autoload": {

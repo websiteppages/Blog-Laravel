@@ -22,7 +22,9 @@ class RoleController extends Controller
             'roles' => $this->roleService->getAll(),
             //'roleName' => Role::orderBy('name')->pluck('name'),
             'permissionGroups' => \App\Enums\Permission::grouped(),
-            'accessMatrix' => $this->roleService->getAccessMatrix(), // optional
+            //'accessMatrix' => $this->roleService->getAccessMatrix(), // optional
+
+            'users'  => $this->roleService->getUsers(),
         ]);
     }
 

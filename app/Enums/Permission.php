@@ -40,7 +40,7 @@ enum Permission: string
     case CreateRoles        = 'create roles';
     case EditRoles          = 'edit roles';
     case DeleteRoles        = 'delete roles';
-    case AssignRoles        = 'assign roles';
+    case ManageRoles        = 'manage roles';
 
     // Comments
     case ViewComments       = 'view comments';
@@ -86,7 +86,7 @@ enum Permission: string
             ],
             'Roles'      => [
                 self::ViewRoles, self::CreateRoles,
-                self::EditRoles, self::DeleteRoles, self::AssignRoles,
+                self::EditRoles, self::DeleteRoles, self::ManageRoles,
             ],
             'Comments'   => [
                 self::ViewComments, self::ApproveComments, self::DeleteComments,

@@ -1,5 +1,9 @@
-<aside class="admin-sidebar" id="admin-sidebar">
+@php
+    use App\Enums\Permission as Perm;
+    $totalUsers = \App\Models\User::count();
+@endphp
 
+<aside class="admin-sidebar" id="admin-sidebar">
         {{-- Logo --}}
         <div class="sidebar-logo">
             <a href="{{ route('admin.overview') }}" class="sidebar-logo-brand">
@@ -27,17 +31,19 @@
     {{-- Overview --}}
     <span class="sidebar-section-label">Overview</span>
 
-     <a href="{{ route('admin.overview') }}"
-       class="sidebar-item {{ request()->routeIs('admin.overview') ? 'active' : '' }}">
-        <svg width="15" height="15" fill="none" stroke="currentColor"
-             stroke-width="1.8" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
-            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-        </svg>
-        Overview
-    </a>
+    @can(Perm::AccessDashboard->value)
+        <a href="{{ route('admin.overview') }}"
+        class="sidebar-item {{ request()->routeIs('admin.overview') ? 'active' : '' }}">
+            <svg width="15" height="15" fill="none" stroke="currentColor"
+                stroke-width="1.8" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+            Overview
+        </a>
+    @endcan
 
 
     <a href="{{ route('customer.dashboard') }}"
@@ -49,10 +55,30 @@
             <rect x="14" y="14" width="7" height="7" rx="1.5"/>
             <rect x="3" y="14" width="7" height="7" rx="1.5"/>
         </svg>
-        Dashboard
+        Customer Dashboard
     </a>
 
-    {{-- @can('view roles') --}}
+
+     {{-- Management — admins only ──────────────────────── --}}
+    @canany([Perm::ViewUsers->value, Perm::ViewRoles->value])
+        <span class="sidebar-section-label">Management</span>
+    @endcanany
+
+    @can(Perm::ViewUsers->value)
+        <a href="{{ route('admin.users.index') }}"
+        class="sidebar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+            <svg width="15" height="15" fill="none" stroke="currentColor"
+                stroke-width="1.8" viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            Users
+            <span class="sidebar-badge sidebar-badge-gray">{{ $totalUsers }}</span>
+        </a>
+    @endcan
+
+   @can('view roles')
     <a href="{{ route('admin.roles.index') }}"
        class="sidebar-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
         <svg width="15" height="15" fill="none" stroke="currentColor"
@@ -61,7 +87,7 @@
         </svg>
         Roles & Permissions
     </a>
-    {{-- @endcan --}}
+    @endcan
 
 
 
@@ -166,25 +192,7 @@
     </a>
     @endcan --}}
 
-    {{-- Management — admins only ──────────────────────── --}}
-    {{-- @canany(['view users', 'view roles'])
-    <span class="sidebar-section-label">Management</span>
-    @endcanany
 
-    @can('view users')
-    @php $totalUsers = \App\Models\User::count(); @endphp
-    <a href="{{ route('admin.users.index') }}"
-       class="sidebar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-        <svg width="15" height="15" fill="none" stroke="currentColor"
-             stroke-width="1.8" viewBox="0 0 24 24">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-        Users
-        <span class="sidebar-badge sidebar-badge-gray">{{ $totalUsers }}</span>
-    </a>
-    @endcan --}}
 
 
 

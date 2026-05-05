@@ -1,5 +1,7 @@
-<aside class="admin-sidebar" id="admin-sidebar">
+@php use App\Enums\Permission as Perm; @endphp
 
+
+<aside class="admin-sidebar" id="admin-sidebar">
         {{-- Logo --}}
         <div class="sidebar-logo">
             <a href="{{ route('customer.dashboard') }}" class="sidebar-logo-brand">
@@ -47,7 +49,6 @@
         </div>
 
         {{-- Navigation --}}
-        {{-- Navigation --}}
 <nav class="sidebar-nav">
 
     {{-- Overview --}}
@@ -65,17 +66,20 @@
         Dashboard
     </a>
 
-   <a href="{{ route('admin.overview') }}"
-       class="sidebar-item {{ request()->routeIs('admin.overview') ? 'active' : '' }}">
-        <svg width="15" height="15" fill="none" stroke="currentColor"
-             stroke-width="1.8" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
-            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-        </svg>
-        Admin
-    </a>
+
+    @can(Perm::AccessDashboard->value)
+        <a href="{{ route('admin.overview') }}"
+        class="sidebar-item {{ request()->routeIs('admin.overview') ? 'active' : '' }}">
+            <svg width="15" height="15" fill="none" stroke="currentColor"
+                stroke-width="1.8" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+            Admin
+        </a>
+    @endcan
 
     {{--  @can('view analytics')
     <a href="{{ route('admin.analytics') }}"
@@ -198,16 +202,7 @@
     </a>
     @endcan --}}
 
-    @can('view roles')
-    <a href="{{ route('admin.roles.index') }}"
-       class="sidebar-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
-        <svg width="15" height="15" fill="none" stroke="currentColor"
-             stroke-width="1.8" viewBox="0 0 24 24">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
-        Roles & Permissions
-    </a>
-    @endcan
+
 
     {{-- System ────────────────────────────────────────── --}}
     {{-- <span class="sidebar-section-label">System</span>

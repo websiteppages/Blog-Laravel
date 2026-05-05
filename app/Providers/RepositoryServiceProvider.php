@@ -27,6 +27,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
 
         // $this->app->bind(
         //     PostRepositoryInterface::class,
@@ -43,10 +44,7 @@ class RepositoryServiceProvider extends ServiceProvider
         //     TagRepository::class
         // );
 
-        // $this->app->bind(
-        //     UserRepositoryInterface::class,
-        //     UserRepository::class
-        // );
+
 
         // $this->app->bind(
         //     CommentRepositoryInterface::class,

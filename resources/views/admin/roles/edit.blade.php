@@ -23,7 +23,7 @@
 @section('admin-content')
 
 {{-- Protected role warning --}}
-@if(in_array($role->name, ['owner']))
+@if(in_array($role->name, [\App\Enums\UserRole::Owner->value]))
 <div class="mb-5 p-4 rounded-xl bg-amber-pale border border-amber/30
              flex items-center gap-3 text-sm text-amber">
     <svg width="16" height="16" fill="none" stroke="currentColor"
@@ -75,7 +75,7 @@
                         (<span id="count-{{ $groupSlug }}">{{ $groupChecked }}</span>/{{ count($permissions) }})
                     </span>
                 </div>
-                @unless(in_array($role->name, ['owner']))
+                @unless(in_array($role->name, [\App\Enums\UserRole::Owner->value]))
                 <button type="button"
                         onclick="toggleGroup('{{ $groupSlug }}')"
                         id="toggle-btn-{{ $groupSlug }}"
@@ -91,7 +91,7 @@
                 @foreach($permissions as $permission)
                 <label class="flex items-center gap-2.5 cursor-pointer group
                                p-2 rounded-lg hover:bg-cream-mid transition-colors
-                               {{ in_array($role->name, ['owner']) ? 'opacity-60 cursor-not-allowed' : '' }}">
+                               {{ in_array($role->name, [\App\Enums\UserRole::Owner->value]) ? 'opacity-60 cursor-not-allowed' : '' }}">
                     <input
                         type="checkbox"
                         name="permissions[]"
@@ -100,7 +100,7 @@
                         data-group="{{ $groupSlug }}"
                         onchange="updateGroupCount('{{ $groupSlug }}')"
                         {{ in_array($permission->name, $rolePermissionNames) ? 'checked' : '' }}
-                        {{ in_array($role->name, ['owner']) ? 'disabled' : '' }}
+                        {{ in_array($role->name, [\App\Enums\UserRole::Owner->value]) ? 'disabled' : '' }}
                     >
                     <span class="text-sm text-gray-600 group-hover:text-ink
                                   transition-colors select-none leading-tight">
@@ -123,7 +123,7 @@
             {{-- Name (read-only for protected roles) --}}
             <div class="mb-4">
                 <label class="form-label">Role Name</label>
-                @if(in_array($role->name, ['owner', 'admin', 'reader']))
+                @if(in_array($role->name, [\App\Enums\UserRole::Owner->value, \App\Enums\UserRole::Admin->value]))
                 <div class="form-input bg-[#f7f6f3] text-gray-500 cursor-not-allowed capitalize">
                     {{ $role->name }}
                 </div>
@@ -165,7 +165,7 @@
         </div>
 
         {{-- Quick presets --}}
-        @unless(in_array($role->name, ['owner']))
+        @unless(in_array($role->name, [\App\Enums\UserRole::Owner->value]))
         <div class="bg-white border border-black/10 rounded-2xl p-5">
             <h3 class="text-sm font-bold text-ink mb-3">Quick Presets</h3>
             <div class="space-y-2">
@@ -192,7 +192,7 @@
         @endunless
 
         {{-- Submit --}}
-        @unless(in_array($role->name, ['owner']))
+        @unless(in_array($role->name, [\App\Enums\UserRole::Owner->value]))
         <button type="submit" form="role-form"
                 class="btn-primary w-full justify-center py-3 text-sm">
             Save Changes

@@ -19,4 +19,5 @@ interface RoleRepositoryInterface
     public function syncPermissions(Role $role, array $permissions): Role;
     public function getAllPermissions(): Collection;
     public function getPermissionsGrouped(): array;
+    public function CustomRoles(): Collection;
 }

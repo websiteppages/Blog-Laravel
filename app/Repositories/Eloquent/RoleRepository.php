@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\Permission\Models\Permission;
 use App\Models\Role;
+use App\Enums\UserRole;
 
 class RoleRepository implements RoleRepositoryInterface
 {
@@ -92,4 +93,11 @@ class RoleRepository implements RoleRepositoryInterface
 
         return $grouped;
     }
+
+    public function CustomRoles(): Collection
+    {
+        return Role::where('name', '!=', UserRole::Owner->value)->get();
+    }
+
+
 }

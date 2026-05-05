@@ -3,13 +3,15 @@
 namespace App\Policies;
 
 use App\Enums\Permission;
+use App\Enums\UserRole;
 use App\Models\User;
 
 class UserPolicy
 {
     public function before(User $user, string $ability): ?bool
     {
-        if ($user->hasRole('owner')) {
+        // Owner full access except sensitive actions
+        if ($user->hasRole(UserRole::Owner->value)) {
             return true;
         }
 
@@ -47,10 +49,25 @@ class UserPolicy
             return false;
         }
 
-        if ($target->hasRole('owner')) {
+        if ($target->hasRole(UserRole::Owner->value)) {
             return false;
         }
 
         return $user->can(Permission::DeleteUsers->value);
+    }
+
+    public function removeUserRole(User $authUser, User $target): bool
+    {
+        // ❌ cannot remove own role
+        if ($authUser->id === $target->id) {
+            return false;
+        }
+
+        // ❌ cannot modify owner
+        if ($target->hasRole(UserRole::Owner->value)) {
+            return false;
+        }
+        // ✅ must have permission
+        return $authUser->can(Permission::ManageRoles->value);
     }
 }

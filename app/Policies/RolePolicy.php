@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\Permission;
+use App\Enums\UserRole;
 use App\Models\User;
 use App\Models\Role;
 
@@ -11,7 +12,7 @@ class RolePolicy
     public function before(User $user, string $ability): ?bool
     {
         // Super Admin bypass
-        if ($user->hasRole('owner')) {
+        if ($user->hasRole(UserRole::Owner->value)) {
             return true;
         }
 

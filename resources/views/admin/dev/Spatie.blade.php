@@ -100,10 +100,6 @@
     ------------------
         👉 எல்லா roles-யும் எடுக்கிறது (Enum)
     ----------------------------------------------------------------
-    isProtected()
-    --------------
-        👉 எந்த roles பாதுகாக்கப்பட்டவை என்று check பண்ணுகிறது
-    ----------------------------------------------------------------
         scopeProtected
         ---------------
             Protected roles மட்டும் database-ல இருந்து filter பண்ணி எடுக்க உதவும் function”
@@ -124,10 +120,22 @@
                     Role::protected()->get();
 
     ----------------------------------------------------------------
+     isProtected()
+    --------------
+        👉 அந்த role பாதுகாக்கப்பட்டதா என்று check பண்ணும் method
+        👉 delete செய்யலாம் (optional), ஆனால்:
+            confirmation தேவை
+            extra validation
+            restricted assignment
+    ----------------------------------------------------------------
     isImmutable()
     -------------
         Immutable = மாற்ற முடியாதது
         👉 “மாற்ற முடியாத role (மாறாத role)” என்பதை check செய்யும் function
+
+        இந்த role-ஐ change (edit/delete) பண்ண முடியாது -  owner
+
+        @unless() - இந்த role immutable இல்லனா மட்டும் run ஆகும்
 
         👉 அதாவது அந்த role:
         ----------------------------
@@ -145,6 +153,15 @@
                 “இந்த role-ஐ edit பண்ண முடியாது”
                 → Access denied (403)
     ----------------------------------------------------------------
+    hasRole('owner')
+        இந்த userக்கு ‘owner’ role இருக்கா?” என்று check பண்ணும்
+        இந்த userக்கு owner role assign பண்ணப்பட்டிருக்கா?”
+
+        இது எங்கிருந்து வருகிறது?
+            custom method (நீங்கள் எழுதினது)
+            அல்லது
+            Spatie Laravel Permission package method
+    --------------------------------------------------------------------------
     hasName()
     ----------
         👉 இந்த role-க்கு கொடுத்த name சரியா இருக்கா என்று check பண்ணும்
@@ -176,6 +193,7 @@
         {{ $role->usersCount() }}
 
     ----------------------------------------------------------------
+
         1. Spatie Role (default package)
         ----------------------------------
             use Spatie\Permission\Models\Role;
@@ -230,7 +248,32 @@
             | Reusability       | ❌           | ✅           |
             | Maintainability   | medium      | high        |
 
+    ----------------------------------------------------------------
+    Policy vs Gate - authorization (permission control) க்கு பயன்படுத்தப்படுகின்றது
+    ----------------
+        👉 Gate = Simple permission rule
+            Gate = Security Guard at entrance
+                👉 ஒரே check: “ID இருக்கா? உள்ளே போகலாம்”
 
+            Policy = Model-based permissions க்கு use பண்ணப்படுகிறது (CRUD control)
+                ஒரு user இந்த model data-க்கு என்ன செய்யலாம்?” என்பதைக் control பண்ணுவது
+
+                Post → create / view / update / delete
+                👉 இதை control பண்ண Policy use பண்ணுவோம்.
+
+                Controller
+                ------------
+                    $this->authorize('update', $post);
+
+                Blade usage
+                --------------
+                    @can('removeUserRole', $user)
+
+                        removeUserRole(User $authUser, User $target)
+                            authUser = login user
+                            target   = $user
+
+    ----------------------------------------------------------------
 
 
 

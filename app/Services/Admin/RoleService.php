@@ -10,12 +10,23 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class RoleService
 {
     public function __construct(
-        protected RoleRepositoryInterface $roleRepository
+        protected RoleRepositoryInterface $roleRepository,
+        protected UserService $userService
     ) {}
+
+    public function getCustomRoles(): Collection
+    {
+        return $this->roleRepository->CustomRoles();
+    }
 
     public function getAll(): Collection
     {
         return $this->roleRepository->all();
+    }
+
+    public function getUsers()
+    {
+        return $this->userService->getUsersWithRoles();
     }
 
     public function getPaginated(): LengthAwarePaginator

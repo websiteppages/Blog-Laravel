@@ -12,6 +12,38 @@
 
         ❌ Without Enum - typo error ❌ - duplicate strings ❌ - maintain panna kashtam ❌
     ------------------------------------------------------------------------------------
+    Services
+    -----------
+        public function __construct(
+            protected RoleRepositoryInterface $roleRepository,
+            protected UserService $userService
+        ) {}
+
+            | Situation                     | Use                |
+            | ----------------------------- | ------------------ |
+            | Business logic / combine data | ✅ `UserService`    |
+            | Direct DB fetch மட்டும்       | ✅ `UserRepository` |
+
+            protected PostRepositoryInterface $postRepo;
+            --------------------------------------------
+                DB-ல இருந்து data மட்டும் எடுக்கணும்
+
+            protected PostService $postService;
+            -------------------------------------
+                logic + multiple operations + combine data (repo call, filters, calculations, formatting)
+
+
+                Professional rule
+                --------------------
+                Service → Repository call பண்ணும்
+                Controller → Service call பண்ணும்
+
+                👉 So:
+
+                Service inside → Repository OK
+                Service inside → Service OK (careful)
+
+
     ------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------
