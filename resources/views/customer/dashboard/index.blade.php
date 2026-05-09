@@ -2,14 +2,14 @@
 
 @section('title', config('app.name', 'Inkwell'))
 
+
+
 {{-- ── Page-level meta tags ─────────────────────────────── --}}
 @push('styles')
 
 @endpush
 
 @section('customer-content')
-
-
 
 
 @endsection

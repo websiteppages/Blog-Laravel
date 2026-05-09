@@ -42,10 +42,12 @@ class RoleRepository implements RoleRepositoryInterface
 
     public function create(array $data): Role
     {
-        return Role::create([
-            'name'       => $data['name'],
-            'guard_name' => 'web',
-        ]);
+        return Role::create($data);
+
+        // return Role::create([
+        //     'name'       => $data['name'],
+        //     'guard_name' => 'web',
+        // ]);
     }
 
     public function update(Role $role, array $data): Role

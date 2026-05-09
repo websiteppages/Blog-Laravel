@@ -51,6 +51,8 @@ class RoleService
 
     public function create(array $data): Role
     {
+        $data['guard_name'] = 'web';
+
         $role = $this->roleRepository->create($data);
 
         return $this->roleRepository->syncPermissions(

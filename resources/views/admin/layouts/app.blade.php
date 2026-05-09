@@ -798,28 +798,113 @@
 
                     {{-- Optional badge next to title --}}
                     @yield('page-badge')
-
                 </div>
 
                 {{-- Right: Action buttons --}}
                 <div class="topbar-actions">
                     @yield('topbar-actions')
                 </div>
-
             </div>
 
+            {{-- Flash messages --}}
+            @if(session()->hasAny(['success', 'error', 'warning']))
+                <div class="flash-wrap">
+                    @if(session('success'))
+                        <div class="flash-success animate-fade"
+                            x-data x-init="setTimeout(() => $el.remove(), 5000)">
+                            <svg width="15" height="15" fill="none" stroke="currentColor"
+                                stroke-width="2.5" viewBox="0 0 24 24">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
+                    @if(session('error'))
+                        <div class="flash-error animate-fade">
+                            <svg width="15" height="15" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                <line x1="9" y1="9" x2="15" y2="15"/>
+                            </svg>
+                            {{ session('error') }}
+                        </div>
+                    @endif
 
+                    @if(session('warning'))
+                        <div class="flash-warning animate-fade">
+                            <svg width="15" height="15" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            {{ session('warning') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
 
+            {{-- Page content --}}
             <div class="admin-content">
                 @yield('admin-content')
             </div>
-
-
-
-            </main>
-
-        </div>
-
+        </main>
     </div>
+
+    {{-- Toast notification --}}
+    <div id="toast" class="toast">
+        <svg width="14" height="14" fill="none" stroke="currentColor"
+            stroke-width="2.5" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span id="toast-msg"></span>
+    </div>
+
  @endsection
+
+@push('after-scripts')
+<script>
+    // ── Sidebar toggle ────────────────────────────────────────
+    function openSidebar() {
+        document.getElementById('admin-sidebar').classList.add('open');
+        document.getElementById('sidebar-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+        document.getElementById('admin-sidebar').classList.remove('open');
+        document.getElementById('sidebar-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeSidebar();
+    });
+
+    // ── Toast ─────────────────────────────────────────────────
+    function showToast(message, duration = 3000) {
+        const toast = document.getElementById('toast');
+        const msg   = document.getElementById('toast-msg');
+        if (!toast || !msg) return;
+        msg.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
+    }
+
+    // ── Active link highlight on page load ────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        // Flash messages auto-dismiss
+        document.querySelectorAll('.flash-success').forEach(el => {
+            setTimeout(() => {
+                el.style.transition = 'opacity 0.3s';
+                el.style.opacity = '0';
+                setTimeout(() => el.remove(), 300);
+            }, 5000);
+        });
+    });
+</script>
+@endpush

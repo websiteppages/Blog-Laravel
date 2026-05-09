@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Permission;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
@@ -65,7 +66,7 @@ class UserController extends Controller
         $this->userService->updateFromRequest($request, $user);
 
         if ($request->filled('role')
-            && Auth::user()->hasPermissionTo('assign roles')
+            && Auth::user()->hasPermissionTo(Permission::ManageRoles->value)
             && !$user->hasRole('owner')) {
             $user->syncRoles([$request->input('role')]);
         }

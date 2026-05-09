@@ -51,6 +51,6 @@ class RolePolicy
 
     public function assign(User $user): bool
     {
-        return $user->can(Permission::AssignRoles->value);
+        return $user->can(Permission::ManageRoles->value);
     }
 }

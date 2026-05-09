@@ -21,5 +21,16 @@
     php artisan event:clear
     php artisan optimize:clear
 
+    -----------------------------------------------------------------------
+
+    cp .env.example .env
+    php artisan key:generate
+
+    composer install
+    php artisan migrate
+    npm install
+
+
+
 
 --}}

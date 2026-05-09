@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('workspace_id')->constrained('workspaces')->cascadeOnDelete();
 
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();
             $table->foreignId("category_id")->nullable()->constrained()->nullOnDelete();
@@ -48,6 +49,10 @@ return new class extends Migration
             // Search
             $table->fullText(["title", "content"]);
             // FULLTEXT = Search engine மாதிரி search (Google style) - மிகவும் fast-smart search (relevance ranking) -  best match first வரும்
+
+             $table->unique(['workspace_id', 'slug']);
+            // Optimized for listing published posts by workspace
+            $table->index(['workspace_id', 'status', 'published_at']);
         });
 
         Schema::create("post_tag", function (Blueprint $table) {

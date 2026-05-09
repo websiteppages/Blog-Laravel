@@ -15,14 +15,22 @@ class RoleMiddleware
             return redirect()->route('login');
         }
 
+        abort_unless(
+            Auth::user()->hasAnyRole($roles),
+            403,
+            'Access Denied'
+        );
+
+        return $next($request);
+
         // Role check பண்றோம்
-        foreach ($roles as $role) {
-            if (Auth::user()->hasRole($role)) {
-                return $next($request);
-            }
-        }
+        // foreach ($roles as $role) {
+        //     if (Auth::user()->hasRole($role)) {
+        //         return $next($request);
+        //     }
+        // }
 
         // Role இல்லன்னா
-        abort(403, 'Access Denied — உங்களுக்கு permission இல்ல!');
+        //abort(403, 'Access Denied — உங்களுக்கு permission இல்ல!');
     }
 }

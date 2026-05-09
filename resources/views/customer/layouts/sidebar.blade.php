@@ -66,6 +66,15 @@
         Dashboard
     </a>
 
+    <a href="{{ route('customer.workspaces.index') }}"
+       class="sidebar-item {{ request()->routeIs('customer.workspaces.index') ? 'active' : '' }}">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"/> <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        Workspace
+    </a>
+
 
     @can(Perm::AccessDashboard->value)
         <a href="{{ route('admin.overview') }}"

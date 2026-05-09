@@ -55,6 +55,9 @@ enum Permission: string
     case ViewSettings       = 'view settings';
     case EditSettings       = 'edit settings';
 
+    //Maintenance
+    case BypassMaintenance  = 'bypass-maintenance';
+
     // Reports / Analytics
     case ViewReports        = 'view reports';
     case ExportReports      = 'export reports';
@@ -93,6 +96,7 @@ enum Permission: string
             ],
             'Media'      => [self::UploadMedia, self::DeleteMedia],
             'Settings'   => [self::ViewSettings, self::EditSettings],
+            'Maintenance'   => [self::BypassMaintenance],
             'Reports'    => [self::ViewReports, self::ExportReports],
         ];
     }
